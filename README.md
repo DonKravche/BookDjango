@@ -1,4 +1,3 @@
-# BookDjango
 # Book Django Project
 
 A web application for managing and organizing books built with Django. This project allows users to manage their book collection, including adding, updating, and tracking books.

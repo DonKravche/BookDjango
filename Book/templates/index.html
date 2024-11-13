@@ -3,9 +3,20 @@
 {% block title %} Main Page {% endblock %}
 
 {% block content %}
+    <a class="btn btn-primary" href="{% url 'Book:book_add' %}">add book</a>
+
     <div class="container mt-5">
         <div class="row">
-            {% include 'book.html' %}
+            <!-- Filter sidebar - 3 columns -->
+            <div class="col-md-3">
+                {% include 'category_filter.html' %}
+            </div>
+
+            <!-- Book list - 9 columns -->
+            <div class="col-md-9">
+                {% include 'book.html' %}
+            </div>
         </div>
     </div>
+
 {% endblock %}

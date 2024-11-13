@@ -118,3 +118,32 @@ Project Link: [https://github.com/yourusername/BookDjangoProject](https://github
 
 ---
 *Note: Remember to update this README with your specific project details, requirements, and instructions.*
+
+
+## Updates
+
+### Update 1 - Added Book Form and Filtering (13/11/2024)
+Added new features to enhance book management functionality:
+
+#### What's New:
+1. Book Addition Form:
+   - Created a new form for adding books to the system
+   - Added validation for book details
+   - Integrated category selection
+
+2. Advanced Filtering System:
+   - Implemented category-based filtering
+   - Added title search functionality
+   - Created a side-by-side layout for filters and book list
+   - Book cards now display in a responsive grid layout
+
+3. Visual Improvements:
+   - Redesigned book display using Bootstrap cards
+   - Added responsive grid system for book layout
+   - Improved filter sidebar design
+
+#### Technical Updates:
+- Added new view logic for handling filters
+- Implemented category grouping by type
+- Enhanced template structure with separate filter components
+- Added Bootstrap styling for better responsive design

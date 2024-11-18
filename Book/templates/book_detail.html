@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="card-title h3 mb-0">{{ book.title }}</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" class="w-25">Author:</th>
+                                        <td>{{ book.author }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Category:</th>
+                                        <td>{{ book.category.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Language:</th>
+                                        <td>{{ book.language }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">ISBN:</th>
+                                        <td>{{ book.ISBN }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Pages:</th>
+                                        <td>{{ book.pages }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Published:</th>
+                                        <td>{{ book.publish_date|date:"F d, Y" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Price:</th>
+                                        <td>
+                                            <span class="text-success font-weight-bold">
+                                                ${{ book.price|floatformat:2 }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-book fa-5x text-secondary mb-3"></i>
+                                    <p class="text-muted">Book Cover</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

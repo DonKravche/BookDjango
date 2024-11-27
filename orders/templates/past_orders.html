@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}My Past Orders{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>My Past Orders</h2>
+
+    {% if order_details %}
+        {% for order_info in order_details %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    Order #{{ order_info.order.id }} -
+                    Placed on {{ order_info.order.created_at|date:"F d, Y" }}
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Book</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_info.items %}
+                            <tr>
+                                <td>{{ item.book.title }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.book.price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <h4 class="text-right">Total: ${{ order_info.total_amount }}</h4>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven't placed any orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

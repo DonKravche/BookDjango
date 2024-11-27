@@ -4,6 +4,8 @@ from .forms import BookForm
 from .models import Book, Category
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -47,20 +49,24 @@ def index(request):
     })
 
 
+@login_required(login_url='/users/login/')
 def book_detail(request, pk):
     book = Book.objects.get(pk=pk)
     return render(request, 'book_detail.html', {'book': book})
 
 
 def addBook(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            book = form.save(commit=False)
-            book.save()
-            return redirect('Book:index')
+    if request.user.has_perm('Book.add_book'):
+        if request.method == 'POST':
+            form = BookForm(request.POST)
+            if form.is_valid():
+                book = form.save(commit=False)
+                book.save()
+                return redirect('Book:index')
+            else:
+                return render(request, 'book_add.html', {'form': form})
         else:
+            form = BookForm()
             return render(request, 'book_add.html', {'form': form})
     else:
-        form = BookForm()
-        return render(request, 'book_add.html', {'form': form})
+        return redirect('Book:index')

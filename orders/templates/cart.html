@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} My Cart {% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+
+        <h2>My Cart</h2>
+        {% if cart_items %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for item in cart_items %}
+
+                    <tr>
+                        <td>{{ item.book.title }}</td>
+                        <td>
+                            <form  action="{% url 'orders:update_cart_item' item.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" value="{{ item.quantity }}" min="0" max="{{ item.book.stock }}" name="quantity">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </td>
+                        <td>{{ item.book.price }}</td>
+                        <td>{{ item.total }}</td>
+
+                        <td>
+                            <a href="{% url 'orders:delete_cart_item' item.id %}" class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <h3>Total Amount: ${{ total_amount }}</h3>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{%  url 'Book:index' %}" class="btn btn-primary">Continue Shopping </a>
+                    <a href="{% url 'orders:processes_to_check_out' %}" class="btn btn-success">Process to Checkout</a>
+                </div>
+            </div>
+
+        {% else %}
+            <h2>Cart is Empty</h2>
+        {% endif %}
+    </div>
+
+{% endblock %}

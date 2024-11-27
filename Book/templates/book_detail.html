@@ -34,6 +34,10 @@
                                         <td>{{ book.pages }}</td>
                                     </tr>
                                     <tr>
+                                        <th scope="row">Stock:</th>
+                                        <td>{{ book.stock }}</td>
+                                    </tr>
+                                    <tr>
                                         <th scope="row">Published:</th>
                                         <td>{{ book.publish_date|date:"F d, Y" }}</td>
                                     </tr>
@@ -47,6 +51,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <a class="btn btn-lg btn-primary" href="{% url 'orders:add_cart_item' book.id %}">Add to Cart</a>
                         </div>
                         <div class="col-md-4">
                             <div class="card">

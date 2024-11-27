@@ -12,19 +12,27 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+            {{ user }}
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+              {% if user.is_authenticated %}
+                  <form action="{% url 'users:logout' %}">
+                      <li>
+                          {% csrf_token %}
+                          <button class="dropdown-item">Log Out</button>
+                      </li>
+                  </form>
+                  {% else %}
+                  <li><a class="dropdown-item" href=/users/login/">Another action</a></li>
+              {% endif %}
+
+            <li><a class="dropdown-item" href="{% url 'orders:cart_view' %}">My Cart</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a href="{% url 'orders:past_orders' %}" class="nav-link">My Orders</a></li>
           </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
       <form class="d-flex" role="search" action="{% url 'Book:index' %}">

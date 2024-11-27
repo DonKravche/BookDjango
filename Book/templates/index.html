@@ -3,7 +3,9 @@
 {% block title %} Main Page {% endblock %}
 
 {% block content %}
-    <a class="btn btn-primary" href="{% url 'Book:book_add' %}">add book</a>
+    {% if perms.Book.add_book %}
+        <a class="btn btn-primary" href="{% url 'Book:book_add' %}">add book</a>
+    {% endif %}
 
     <div class="container mt-5">
         <div class="row">

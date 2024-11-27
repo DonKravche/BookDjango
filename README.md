@@ -172,3 +172,14 @@ Enhanced user experience with new navigation and detailed book information featu
 - Created new book detail view and template
 - Enhanced URL routing for book details
 - Added detailed page styling and layout
+
+### Update 2 - Added Pagination and Book Details
+Enhanced user experience with new navigation and detailed book information features:
+
+#### What's New:
+1. -Implemented cart naviagtion for ordered book
+2. -added to clear cart after order
+3. -also added my previous order page (Not Working Very well but Will be Updated Soon)
+4. -Added update book qunatity in cart, also delete method
+5. Fixed Some bugs.
+6. improved code quality.

@@ -173,7 +173,7 @@ Enhanced user experience with new navigation and detailed book information featu
 - Enhanced URL routing for book details
 - Added detailed page styling and layout
 
-### Update 2 - Added Pagination and Book Details
+### Update 3/4 - Added Pagination and Book Details
 Enhanced user experience with new navigation and detailed book information features:
 
 #### What's New:

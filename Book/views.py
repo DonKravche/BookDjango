@@ -5,7 +5,8 @@ from .models import Book, Category
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.contrib.auth.decorators import login_required
-
+from django.views.generic import TemplateView, DetailView, FormView
+from django.urls.base import reverse_lazy
 
 # Create your views here.
 
@@ -49,10 +50,57 @@ def index(request):
     })
 
 
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        book_title = request.GET.get('book_title')
+        selected_categories = request.GET.getlist('category')
+
+        books = Book.objects.all()
+
+        if book_title:
+            books = books.filter(title__icontains=book_title)
+
+        if selected_categories:
+            books = books.filter(category__id__in=selected_categories)
+
+        categories = Category.objects.all()
+        categories_by_type = {}
+
+        # Page Pagination
+        paginator = Paginator(books, 9)
+        page_number = request.GET.get('page')
+
+        try:
+            books = paginator.page(page_number)
+        except PageNotAnInteger:
+            books = paginator.page(1)
+        except EmptyPage:
+            books = paginator.page(paginator.num_pages)
+
+        for category in categories:
+            category_type = category.category_type
+            if category_type not in categories_by_type:
+                categories_by_type[category_type] = []
+            categories_by_type[category_type].append(category)
+
+        return render(request, self.template_name, {
+            'books': books,
+            'categories_by_type': categories_by_type
+        })
+
+
 @login_required(login_url='/users/login/')
 def book_detail(request, pk):
     book = Book.objects.get(pk=pk)
     return render(request, 'book_detail.html', {'book': book})
+
+
+class BookDetailView(DetailView):
+    template_name = 'book_detail.html'
+    context_object_name = 'book'
+    model = Book
 
 
 def addBook(request):
@@ -70,3 +118,15 @@ def addBook(request):
             return render(request, 'book_add.html', {'form': form})
     else:
         return redirect('Book:index')
+
+
+class AddBookView(FormView):
+    form_class = BookForm
+    template_name = 'book_add.html'
+    success_url = reverse_lazy('Book:index-cbv')
+
+    def form_valid(self, form):
+        book = form.save(commit=False)
+        book.save()
+
+        return super().form_valid(form)

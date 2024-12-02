@@ -5,6 +5,8 @@ from Book.models import Book
 from .models import Cart, CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic import View, DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
 @login_required(login_url='/users/login')
@@ -35,6 +37,26 @@ def add_cart_item(request, pk):
     return redirect(request.META['HTTP_REFERER'])
 
 
+class AddCartItemView(View):
+    @staticmethod
+    def get(request, pk):
+        book = Book.objects.get(pk=pk)
+
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        # print(f'Book: {pk}', book.stock)
+        if book.stock > 0:
+            cart_item, cart_item_created = CartItem.objects.get_or_create(cart=cart, book=book)
+            # print(f'CartItem: {cart_item.book.title}', cart_item_created)
+            if not cart_item_created:
+                cart_item.quantity += 1
+            else:
+                cart_item.quantity = 1
+            cart_item.save()
+            # print("SAVED!")
+
+        return redirect('orders:cart_view')
+
+
 @login_required(login_url='/users/login')
 def update_cart_item(request, pk):
     if request.method == 'POST':
@@ -52,12 +74,36 @@ def update_cart_item(request, pk):
     return redirect(request.META['HTTP_REFERER'])
 
 
+class UpdateCartItemView(View):
+    @staticmethod
+    def post(request, pk):
+        cart_item = CartItem.objects.get(pk=pk)
+
+        new_quantity = int(request.POST.get('quantity'))
+
+        if new_quantity == 0:
+            cart_item.delete()
+
+        elif new_quantity < cart_item.book.stock:
+            cart_item.quantity = new_quantity
+            cart_item.save()
+
+        return redirect(request.META['HTTP_REFERER'])
+
+
 @login_required(login_url='/users/login')
 def delete_cart_item(request, pk):
     cart_item = CartItem.objects.get(pk=pk)
 
     cart_item.delete()
     return redirect(request.META['HTTP_REFERER'])
+
+
+class DeleteCartItemView(DeleteView):
+    model = CartItem
+    success_url = reverse_lazy('orders:cart_view')
+
+
 
 
 @login_required(login_url='/users/login')
